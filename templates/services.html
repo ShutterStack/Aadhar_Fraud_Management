@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Aadhar AI</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+  <link href="static/img/favicon.ico" rel="icon">
+  <link href="static/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="static/css/style1.css" rel="stylesheet">
+  <link href="/static/styles.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    #results-section, #elapsed-time, #download-button {
+      display: none;
+    }
+
+    #elapsed-time {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    #loading-icon {
+      display: none;
+      margin-top: 15px;
+    }
+    
+    .form-label {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #495057;
+    }
+    .error-message {
+      color: red;
+      font-size: 0.9rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+
+    #download-button {
+      display: block;
+      margin: 20px auto;
+    }
+    /* Target the canvas directly within the chart containers */
+#documentTypeChart canvas, 
+#acceptedRejectedChart canvas,
+#finalRemarksChart canvas,
+#uidMatchScoreHistogram canvas,
+#nameMatchScoreHistogram canvas, 
+#addressMatchScoreHistogram canvas {
+  max-width: 100px !important;  
+  max-height: 50px !important; 
+}
+/* Styling for Pie Charts Section */
+.pie-chart-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.pie-chart-container > div {
+  width: 48%; /* Each pie chart takes 48% of the width */
+  text-align: center;
+}
+
+/* Styling for Other Charts */
+.chart-container > div {
+  margin-bottom: 20px;
+  text-align: center; /* Center align chart titles */
+}
+
+.chart-title {
+  margin-top: 10px;
+}
+
+.chart-container canvas:has(+ .chart-title) + .chart-title {
+  visibility: visible;
+}
+
+
+
+    
+
+
+  </style>
+</head>
+<body>
+  <header id="header" class="header fixed-top">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="static/img/logo.png" alt="">
+        <span>Aadhar AI</span>
+      </a>
+      <nav id="navbar" class="navbar">
+        <ul>
+            <li><a class="nav-link scrollto" href="{{ url_for('home') }}">Home</a></li>
+            <li><a class="nav-link scrollto" href="{{ url_for('about') }}">About</a></li>
+            <li><a class="nav-link scrollto active" href="{{ url_for('services') }}">Services</a></li>
+            <li><a class="nav-link scrollto" href="{{ url_for('contact') }}">Contact</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav>
+    </div>
+  </header>
+
+  <section id="services" class="services">
+    <div class="container" style="margin-top: 50px;" data-aos="fade-up">
+      <header class="section-header">
+        <h2>Services</h2>
+        <p>Aadhaar Fraud Management System</p>
+      </header>
+      <div class="row gy-4">
+        <div class="col-lg-12 col-md-12" data-aos="fade-up" data-aos-delay="200">
+          <div class="service-box blue">
+            <form id="upload-form" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label for="zipfile" class="form-label">Upload ZIP File (Containing Images) </label>
+                <input type="file" class="form-control custom-file-input" name="zipfile" id="zipfile" accept=".zip" required>
+                <span class="error-message" id="zip-error"></span>
+              </div>
+              <div class="mb-3">
+                <label for="excelfile" class="form-label">Upload Excel File (Containing Mapping Values) </label>
+                <input type="file" class="form-control custom-file-input" name="excelfile" id="excelfile" accept=".xlsx" required>
+                <span class="error-message" id="excel-error"></span>
+              </div>
+              <button type="submit" class="btn btn-primary"> Start Process </button>
+              <div id="loading-icon">
+                <i class="bi bi-arrow-repeat spinner-border spinner-border-sm"></i> Processing...
+              </div>
+              <p id="elapsed-time">Elapsed Time: <span id="time-counter">0</span> seconds</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="results-section" class="results">
+    <div class="container" data-aos="fade-up">
+      <header class="section-header">
+        <h2>Processed Results</h2>
+      </header>
+      <div id="results" class="mt-4"></div>
+      <button id="download-button" class="btn btn-success" onclick="downloadResults()">Download Results</button>
+    </div>
+  </section>
+
+  <!-- Pie Charts Section -->
+<section id="pie-charts-section" style="display: none;">
+  <div class="container" data-aos="fade-up">
+    <header class="section-header">
+      <h2>Visualizations</h2>
+    </header>
+    <div class="pie-chart-container">
+      <!-- Document Type Pie Chart -->
+      <div>
+        <canvas id="documentTypeChart"></canvas>
+        <h3 class="chart-title">Document Type Proportion</h3>
+      </div>
+      <!-- Accepted vs. Rejected Pie Chart -->
+      <div>
+        <canvas id="acceptedRejectedChart"></canvas>
+        <h3 class="chart-title">Accepted vs. Rejected</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <section id="visualizations-section" style="display: none;">
+    <div class="container" data-aos="fade-up">
+      <div class="chart-container">
+        <!-- Final Remarks Chart -->
+        <div>
+          <canvas id="finalRemarksChart"></canvas>
+          <h3 class="chart-title">Final Remarks</h3>
+        </div>
+        <!-- UID Match Score Chart -->
+        <div>
+          <canvas id="uidMatchScoreHistogram"></canvas>
+          <h3 class="chart-title">UID Match Score Distribution</h3>
+        </div>
+  
+        <!-- Name Match Score Chart -->
+        <div>
+          <canvas id="nameMatchScoreHistogram"></canvas>
+          <h3 class="chart-title">Name Match Score Distribution</h3>
+        </div>
+  
+        <!-- Address Match Score Chart -->
+        <div>
+          <canvas id="addressMatchScoreHistogram"></canvas>
+          <h3 class="chart-title">Address Match Score Distribution</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+  
+  <footer id="footer" class="footer">
+    <div class="footer-top">
+        <div class="container">
+          <div class="row gy-4">
+            <div class="col-lg-5 col-md-12 footer-info">
+              <a href="index.html" class="logo d-flex align-items-center">
+                <img src="static/img/logo.png" alt="">
+                <span>Aadhar AI</span>
+              </a>
+              <p>We offer cutting-edge solutions to safeguard and streamline your Aadhaar-related processes. With extensive experience in leveraging AI to detect anomalies and prevent fraud, we guide our clients through a secure digital journey. Our commitment to continuous innovation ensures that we stay ahead of emerging threats, building and transferring AI-driven skills, expertise, and solutions to help our clients protect their Aadhaar data effectively.
+              </p>
+              <div class="social-links mt-3">
+                <a href="https://www.twitter.com" target="_blank" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="https://facebook.com" target="_blank" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="https://instagram.com" target="_blank" class="instagram"><i class="bi bi-instagram bx bxl-instagram"></i></a>
+                <a href="https://linkedin.com" target="_blank" class="linkedin"><i class="bi bi-linkedin bx bxl-linkedin"></i></a>
+              </div>
+            </div>
+  
+            <div class="col-lg-2 col-6 footer-links">
+              <h4>Useful Links</h4>
+              <ul>
+                <li><i class="bi bi-chevron-right"></i> <a href="{{ url_for('home') }}">Home</a></li>
+                <li><i class="bi bi-chevron-right"></i> <a href="{{ url_for('about') }}">About us</a></li>
+                <li><i class="bi bi-chevron-right"></i> <a href="{{ url_for('services') }}">Services</a></li>
+                <li><i class="bi bi-chevron-right"></i> <a href="{{ url_for('contact') }}">Contact</a></li>
+              </ul>
+            </div>
+  
+            <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+              <h4>Contact Us</h4>
+              <p>
+                #23, VHBCS Layout <br>
+                Thane, 560045<br>
+                India <br><br>
+                <strong>Phone:</strong> +91 1234567890<br>
+                <strong>Email:</strong> info@example.com<br>
+              </p>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+  
+      <div class="container">
+        <div class="copyright">
+          &copy; Copyright <strong><span>Aadhar AI</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+          Designed by <a href="https://github.com/ShutterStack" target="_blank">ShutterStack</a>
+        </div>
+      </div>
+  </footer>
+
+  <script src="static/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="static/vendor/aos/aos.js"></script>
+  <script src="static/vendor/php-email-form/validate.js"></script>
+  <script src="static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="static/vendor/purecounter/purecounter.js"></script>
+  <script src="static/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="static/js/main.js"></script>
+<script>
+    let timerInterval;
+    let elapsedTime = 0;
+
+    function startTimer() {
+      elapsedTime = 0;
+      $('#elapsed-time').show();
+      timerInterval = setInterval(() => {
+        elapsedTime++;
+        $('#time-counter').text(elapsedTime);
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+
+    function downloadResults() {
+      window.location.href = '/download';
+    }
+
+    $(document).ready(function() {
+      $('#upload-form').on('submit', function(e) {
+        e.preventDefault();
+        startTimer();
+        $('#loading-icon').fadeIn();
+
+        var formData = new FormData(this);
+        $.ajax({
+          url: '/upload',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(response) {
+            stopTimer();
+            $('#loading-icon').fadeOut();
+
+            if (response.results) {
+              let headers = ['SrNo', 'Accepted/Rejected', 'Document Type', 'Final Remarks'];
+              let resultHtml = '<table class="table"><thead><tr>';
+
+              headers.forEach(header => {
+                resultHtml += '<th>' + header + '</th>';
+              });
+
+              resultHtml += '</tr></thead><tbody>';
+              response.results.forEach((row, index) => {
+                resultHtml += '<tr>';
+                resultHtml += '<td>' + (index + 1) + '</td>';
+                resultHtml += '<td>' + row['Accepted/Rejected'] + '</td>';
+                resultHtml += '<td>' + row['Document Type'] + '</td>';
+                resultHtml += '<td>' + row['Final Remarks'] + '</td>';
+                resultHtml += '</tr>';
+              });
+
+              resultHtml += '</tbody></table>';
+              $('#results').html(resultHtml); 
+
+              // Visualizations
+              const visualizationData = response.visualization_data;
+
+              // 1. Final Remarks Chart (Bar Chart)
+              const ctx1 = document.getElementById('finalRemarksChart').getContext('2d');
+              const finalRemarksChart = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                  labels: visualizationData.final_remarks_frequency.labels, 
+                  datasets: [{
+                    label: 'Frequency of Final Remarks',
+                    data: visualizationData.final_remarks_frequency.values,
+                    backgroundColor: [
+                      'rgba(255, 99, 132, 0.2)',
+                      'rgba(54, 162, 235, 0.2)',
+                      'rgba(255, 206, 86, 0.2)',
+                      'rgba(75, 192, 192, 0.2)',
+                      'rgba(153, 102, 255, 0.2)',
+                      'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                      'rgba(255, 99, 132, 1)',
+                      'rgba(54, 162, 235, 1)',
+                      'rgba(255, 206, 86, 1)',
+                      'rgba(75, 192, 192, 1)',
+                      'rgba(153, 102, 255, 1)',
+                      'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                  }]
+                },
+                options: { 
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+              });
+
+              // 2. Document Type Proportion (Pie Chart)
+              const ctx2 = document.getElementById('documentTypeChart').getContext('2d');
+              const documentTypeChart = new Chart(ctx2, {
+                type: 'pie',
+                data: {
+                  labels: visualizationData.document_type_proportion.labels,
+                  datasets: [{
+                    data: visualizationData.document_type_proportion.values,
+                    backgroundColor: [
+                      'rgba(54, 162, 235, 0.2)', 
+                      'rgba(255, 99, 132, 0.2)' 
+                    ]
+                  }]
+                }
+              });
+
+              // 3. Accepted vs. Rejected Proportion (Pie Chart)
+              const ctx3 = document.getElementById('acceptedRejectedChart').getContext('2d');
+              ctx3.canvas.width = 150; 
+              ctx3.canvas.height = 100;
+              const acceptedRejectedChart = new Chart(ctx3, {
+                type: 'pie',
+                data: {
+                  labels: visualizationData.accepted_rejected_proportion.labels,
+                  datasets: [{
+                    data: visualizationData.accepted_rejected_proportion.values,
+                    backgroundColor: [
+                      'rgba(75, 192, 192, 0.2)', 
+                      'rgba(255, 159, 64, 0.2)'
+                    ]
+                  }]
+                }
+              });
+
+              // 4. UID Match Score Distribution (Histogram - using bar chart with assumed binning)
+              const ctx4 = document.getElementById('uidMatchScoreHistogram').getContext('2d');
+const uidMatchScoreHistogram = new Chart(ctx4, {
+  type: 'bar', 
+  data: {
+    labels: ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100'], // Bins for the histogram
+    datasets: [{
+      label: 'UID Match Score Distribution',
+      data: Array(10).fill(0), // Initialize with 10 bins for 0-100
+      backgroundColor: 'rgba(255, 206, 86, 0.2)', 
+      borderColor: 'rgba(255, 206, 86, 1)',
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'UID Match Score' 
+        }
+      },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Frequency'
+        }
+      }
+    }
+  }
+});
+
+              // Manually calculate and update histogram data (assuming 10 bins)
+              visualizationData.uid_match_score_distribution.values.forEach(score => {
+  const binIndex = Math.floor(score / 10); // Calculate bin index 
+  if (binIndex >= 0 && binIndex < 10) {  
+    uidMatchScoreHistogram.data.datasets[0].data[binIndex]++;
+  }
+});
+uidMatchScoreHistogram.update(); 
+
+              // 5. Name Match Score Distribution (Histogram - Similar to UID)
+              // ... (Implement similar logic for Name Match Score) ...
+
+              const ctx5 = document.getElementById('nameMatchScoreHistogram').getContext('2d');
+const nameMatchScoreHistogram = new Chart(ctx5, {
+  type: 'bar',
+  data: {
+    labels: ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100'], // Bins for the histogram
+    datasets: [{
+      label: 'Name Match Score Distribution',
+      data: Array(10).fill(0), // Initialize with 10 bins for 0-100
+      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+      borderColor: 'rgba(54, 162, 235, 1)', 
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Name Match Score'
+        }
+      },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Frequency'
+        }
+      }
+    }
+  }
+});
+
+visualizationData.name_match_score_distribution.values.forEach(score => {
+  const binIndex = Math.floor(score / 10);
+  if (binIndex >= 0 && binIndex < 10) {
+    nameMatchScoreHistogram.data.datasets[0].data[binIndex]++;
+  }
+});
+nameMatchScoreHistogram.update();
+
+              // 6. Final Address Match Score Distribution (Histogram - Similar to UID)
+              // ... (Implement similar logic for Address Match Score) ...
+
+              const ctx6 = document.getElementById('addressMatchScoreHistogram').getContext('2d');
+const addressMatchScoreHistogram = new Chart(ctx6, {
+  type: 'bar',
+  data: {
+    labels: ['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100'], // Bins for the histogram
+    datasets: [{
+      label: 'Address Match Score Distribution',
+      data: Array(10).fill(0), // Initialize with 10 bins for 0-100
+      backgroundColor: 'rgba(255, 159, 64, 0.2)', 
+      borderColor: 'rgba(255, 159, 64, 1)', 
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: 'Address Match Score' 
+        }
+      },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Frequency' 
+        }
+      }
+    }
+  }
+});
+
+visualizationData.address_match_score_distribution.values.forEach(score => {
+  const binIndex = Math.floor(score / 10);
+  if (binIndex >= 0 && binIndex < 10) {
+    addressMatchScoreHistogram.data.datasets[0].data[binIndex]++;
+  }
+});
+addressMatchScoreHistogram.update();
+
+              $('#results-section').fadeIn();
+              $('#download-button').fadeIn();
+              $('#pie-charts-section').fadeIn();
+              $('#visualizations-section').fadeIn(); 
+            } else {
+              $('#results').html('<p>No results found.</p>');
+            }
+          },
+          error: function(xhr, status, error) {
+            stopTimer();
+            $('#loading-icon').fadeOut();
+            console.log(xhr.responseText);
+            alert('Error: ' + error);
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
