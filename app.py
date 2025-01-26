@@ -333,4 +333,4 @@ def upload_files():
 
 if __name__ == '__main__':
     # Configure HTTPS with self-signed certificate
-    app.run(ssl_context=('cert.pem', 'key.pem'), debug=True)
+    app.run(debug=True)
