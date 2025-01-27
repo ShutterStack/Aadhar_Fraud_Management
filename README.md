@@ -1,6 +1,5 @@
 <div align="left" style="position: relative;">
-<img src="https://img.icons8.com/?size=512&id=55494&format=png" align="right" width="30%" style="margin: -20px 0 0 20px;">
-<h1>AADHAR_FRAUD_MANAGEMENT</h1>
+<h1>AI BASED AADHAR_FRAUD_MANAGEMENT</h1>
 <p align="left">
 	<em><code>❯ REPLACE-ME</code></em>
 </p>
@@ -47,50 +46,6 @@
 <code>❯ REPLACE-ME</code>
 
 ---
-
-##  Project Structure
-
-```sh
-└── Aadhar_Fraud_Management/
-    ├── Base Models
-    │   ├── Agile_Document.xls
-    │   ├── LICENSE
-    │   ├── README.md
-    │   ├── classification_model
-    │   ├── detection_model
-    │   ├── ocr
-    │   ├── runs
-    │   └── yolo11n-cls.pt
-    ├── LICENSE
-    ├── README.md
-    ├── app.py
-    ├── models
-    │   ├── classification.pt
-    │   └── detection.pt
-    ├── requirements.txt
-    ├── results
-    │   └── results.xlsx
-    ├── static
-    │   ├── css
-    │   ├── img
-    │   ├── js
-    │   └── vendor
-    ├── templates
-    │   ├── about.html
-    │   ├── contact.html
-    │   ├── index.html
-    │   └── services.html
-    ├── uploads
-    │   ├── SR1.jpg
-    │   ├── SR2.jpg
-    │   ├── SR3_1.jpg
-    │   ├── SR3_2.jpg
-    │   ├── SR4.jpg
-    │   ├── documents.zip
-    │   └── input file.xlsx
-    └── vercel.json
-```
-
 
 ###  Project Index
 <details open>
