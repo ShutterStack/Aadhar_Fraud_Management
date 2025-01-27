@@ -37,13 +37,13 @@
 
 ##  Overview
 
-<code>❯ REPLACE-ME</code>
+
 
 ---
 
 ##  Features
 
-<code>❯ REPLACE-ME</code>
+
 
 ---
 
@@ -1467,10 +1467,6 @@
 
 Before getting started with Aadhar_Fraud_Management, ensure your runtime environment meets the following requirements:
 
-- **Programming Language:** Error detecting primary_language: {'json': 1, 'py': 1, 'txt': 293, 'pt': 8, 'ipynb': 5, 'yaml': 4, 'html': 4}
-- **Package Manager:** Pip
-
-
 ###  Installation
 
 Install Aadhar_Fraud_Management using one of the following methods:
@@ -1479,53 +1475,42 @@ Install Aadhar_Fraud_Management using one of the following methods:
 
 1. Clone the Aadhar_Fraud_Management repository:
 ```sh
-❯ git clone https://github.com/ShutterStack/Aadhar_Fraud_Management
+git clone https://github.com/ShutterStack/Aadhar_Fraud_Management
 ```
 
 2. Navigate to the project directory:
 ```sh
-❯ cd Aadhar_Fraud_Management
+cd Aadhar_Fraud_Management
 ```
 
 3. Install the project dependencies:
 
 
-**Using `pip`** &nbsp; [<img align="center" src="" />]()
+**Set up environnment first and enable env
 
 ```sh
-❯ echo 'INSERT-INSTALL-COMMAND-HERE'
+python -m venv venv
+venv/Scripts/Activate
 ```
 
 
-
-
-###  Usage
+###  Requirements
 Run Aadhar_Fraud_Management using the following command:
-**Using `pip`** &nbsp; [<img align="center" src="" />]()
+**First install all the requirements
 
 ```sh
-❯ echo 'INSERT-RUN-COMMAND-HERE'
+pip install -r requirements.txt
 ```
 
 
-###  Testing
+### Running and Debugging
 Run the test suite using the following command:
-**Using `pip`** &nbsp; [<img align="center" src="" />]()
-
 ```sh
-❯ echo 'INSERT-TEST-COMMAND-HERE'
+python app.py
 ```
 
 
 ---
-##  Project Roadmap
-
-- [X] **`Task 1`**: <strike>Implement feature one.</strike>
-- [ ] **`Task 2`**: Implement feature two.
-- [ ] **`Task 3`**: Implement feature three.
-
----
-
 ##  Contributing
 
 - **💬 [Join the Discussions](https://github.com/ShutterStack/Aadhar_Fraud_Management/discussions)**: Share your insights, provide feedback, or ask questions.
@@ -1566,17 +1551,5 @@ Run the test suite using the following command:
    </a>
 </p>
 </details>
-
----
-
-##  License
-
-This project is protected under the [SELECT-A-LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
-
----
-
-##  Acknowledgments
-
-- List any resources, contributors, inspiration, etc. here.
 
 ---
