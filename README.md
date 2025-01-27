@@ -24,14 +24,21 @@
 
 ##  Features
 
-1) Automated Aadhaar Data Extraction: Leverages a pre-trained YOLOv8 object detection model to precisely locate and extract key data fields from Aadhaar cards, including Name, UID (Unique Identification Number), and Address components. This automated extraction process minimizes manual effort and ensures data accuracy.
+#### 1)Automated Aadhaar Data Extraction:
+Leverages a pre-trained YOLOv8 object detection model to precisely locate and extract key data fields from Aadhaar cards, including Name, UID (Unique Identification Number), and Address components. This automated extraction process minimizes manual effort and ensures data accuracy.
    
-2) Advanced OCR Capabilities: Employs the EasyOCR library, an open-source OCR engine, to convert the text within the detected regions of interest from image format to machine-readable text. This enables the system to process and analyze the extracted Aadhaar information.
-3) Intelligent Data Comparison: Implements FuzzyWuzzy, a Python library for fuzzy string matching, to compare the extracted Aadhaar data with reference datasets. The use of fuzzy matching techniques accommodates potential variations in data entry, OCR output, or image quality, resulting in robust and reliable verification even with minor discrepancies.
-4) Comprehensive Fraud Detection:  Identifies potential fraud attempts by rigorously comparing the extracted Aadhaar information against trusted datasets, flagging any inconsistencies, and highlighting suspicious patterns for further investigation.
-5) User-Friendly Web Interface:  Provides an intuitive web-based platform built with Flask, HTML, CSS, and JavaScript, enabling users to easily upload zip files containing Aadhaar images and Excel spreadsheets with corresponding reference data. The interface also facilitates seamless process initiation and result download.
-6) Interactive Data Visualizations:  Presents the processed results using Chart.js, a JavaScript charting library, to generate insightful bar charts, pie charts, and histograms. These visualizations offer users a clear, concise understanding of data accuracy, potential fraud indicators, and overall system performance.
-7) Seamless System Integration:  Designed for easy integration into existing systems and workflows, streamlining verification processes and fortifying security protocols within organizations.
+#### 2) Advanced OCR Capabilities: 
+Employs the EasyOCR library, an open-source OCR engine, to convert the text within the detected regions of interest from image format to machine-readable text. This enables the system to process and analyze the extracted Aadhaar information.
+#### 3) Intelligent Data Comparison: 
+Implements FuzzyWuzzy, a Python library for fuzzy string matching, to compare the extracted Aadhaar data with reference datasets. The use of fuzzy matching techniques accommodates potential variations in data entry, OCR output, or image quality, resulting in robust and reliable verification even with minor discrepancies.
+#### 4) Comprehensive Fraud Detection: 
+Identifies potential fraud attempts by rigorously comparing the extracted Aadhaar information against trusted datasets, flagging any inconsistencies, and highlighting suspicious patterns for further investigation.
+#### 5) User-Friendly Web Interface:  
+Provides an intuitive web-based platform built with Flask, HTML, CSS, and JavaScript, enabling users to easily upload zip files containing Aadhaar images and Excel spreadsheets with corresponding reference data. The interface also facilitates seamless process initiation and result download.
+#### 6) Interactive Data Visualizations:  
+Presents the processed results using Chart.js, a JavaScript charting library, to generate insightful bar charts, pie charts, and histograms. These visualizations offer users a clear, concise understanding of data accuracy, potential fraud indicators, and overall system performance.
+#### 7) Seamless System Integration:  
+Designed for easy integration into existing systems and workflows, streamlining verification processes and fortifying security protocols within organizations.
 
 ---
 
