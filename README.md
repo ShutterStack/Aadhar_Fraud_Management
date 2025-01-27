@@ -58,7 +58,8 @@ Presents the processed results using Chart.js, a JavaScript charting library, to
 #### 7) Seamless System Integration:  
 Designed for easy integration into existing systems and workflows, streamlining verification processes and fortifying security protocols within organizations.
 
-![ FlowChart ](Base Models/flowchart.jpeg)
+
+![ FlowChart ](https://github.com/user-attachments/assets/46c1583e-e7f3-46aa-9c82-4a86a3b99690)
 
 ---
 
