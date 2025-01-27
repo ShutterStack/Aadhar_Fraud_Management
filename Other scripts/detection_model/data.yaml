@@ -1,9 +1,0 @@
-path: 'C:/Users/aryap/Desktop/Infosys_training/detection_model/data.yaml'
-train: 'C:/Users/aryap/Desktop/Infosys_training/detection_model/dataset/images/train'
-val: 'C:/Users/aryap/Desktop/Infosys_training/detection_model/dataset/images/val'
-
-
-names:
-  0: name
-  1: uid
-  2: address
