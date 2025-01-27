@@ -1,7 +1,6 @@
 <div align="left" style="position: relative;">
 <h1>AI BASED AADHAR_FRAUD_MANAGEMENT</h1>
 <p align="left">
-	<em><code>❯ REPLACE-ME</code></em>
 </p>
 <p align="left">
 	<img src="https://img.shields.io/github/license/ShutterStack/Aadhar_Fraud_Management?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
